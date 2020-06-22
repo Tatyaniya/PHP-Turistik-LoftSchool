@@ -41,7 +41,13 @@ $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
                     wp_reset_postdata(); 
                 ?>
                 <div class="pagenavi-post-wrap">
-                    <?php echo paginate_links(); ?>
+                    <?php
+                        $args = [
+                            'prev_text' => __('<i class="icon icon-angle-double-left"></i>', 'turistik'),
+                            'next_text' => __('<i class="icon icon-angle-double-right"></i>', 'turistik'),
+                            ];
+                        the_posts_pagination($args);
+                    ?>
                 </div>
             </div>
 

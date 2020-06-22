@@ -3,12 +3,12 @@
  * Template name: Главная
  */
 get_header();
-global $wp_query;
+//global $wp_query;
+//var_dump($wp_query);
 
-$args = array('post_type' => ['post','news', 'stocks']); 
-query_posts($args);
+//$args = array('post_type' => ['post','news', 'stocks']); 
+//query_posts($args);
 
-$paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
 ?>
 
     <div class="main-content">
@@ -21,6 +21,8 @@ $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
                     <h1 class="title-page"><?php single_tag_title(); ?></h1>
                 <?php elseif( is_category() ): ?>
                     <h1 class="title-page"><?php single_cat_title(); ?></h1>
+                <?php elseif( is_day() ): ?>
+                    <h1 class="title-page">В этот день:</h1>
                 <?php else: ?>
                     <h1 class="title-page">Последние новости и акции из мира туризма</h1>
                 <?php endif; ?>
@@ -28,6 +30,7 @@ $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
                 <div class="posts-list">
 
                 <?php
+                    $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
                     $args = array(
                         'post_type'      => ['post','news', 'stocks'],
                         'orderby'        => 'date',
@@ -35,6 +38,8 @@ $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
                         'paged'          => $paged
                     );
                     $q = new WP_Query($args);
+                    //echo '<pre>';
+                    //var_dump($args['post_type']);
                 ?>
 
                 <?php if ( $q->have_posts() ) : ?>
@@ -59,7 +64,7 @@ $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
                                 </div>
                             </div>
                         </div>
-
+                       
                     <?php endwhile;
                 else: ?>
                     <p>
@@ -72,10 +77,31 @@ $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
             </div>
 
             <div class="pagenavi-post-wrap">
+           
+                <?php if($q->max_num_pages > 1) { ?>
+                    
+                    <div class="pagenavi-post-wrap">
+                        <?php if( get_query_var('paged') == 0) { ?>
+                                <i class="icon icon-angle-double-left"></i>
+                        <?php } ?>
 
-            <?php // kama_pagenavi($before = '', $after = '', $echo = true, $args = array(), $wp_query = $q);
-                 echo paginate_links();
-            ?>
+                        <?php $big = 999999999;
+                            echo paginate_links( array(
+                                'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+                                'format' => '?paged=%#%',
+                                'current' => max( 1, get_query_var('paged') ),
+                                'prev_text'          => '',
+                                'next_text'          => '',
+                                'total' => $q->max_num_pages
+                            ) );
+                        ?>
+
+                        <?php if( get_query_var('paged') == $q->max_num_pages) { ?>
+                                <i class="icon icon-angle-double-right"></i>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+                
                 
             </div>
         </div>

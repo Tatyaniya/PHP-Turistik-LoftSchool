@@ -38,7 +38,30 @@ $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
 
                 ?>
                 <div class="pagenavi-post-wrap">
-                    <?php echo paginate_links(); ?>
+                <?php // var_dump($news); 
+                        if($news->max_num_pages > 1) { ?>
+                        
+                        <div class="pagenavi-post-wrap">
+                            <?php if( get_query_var('paged') == 0) { ?>
+                                    <i class="icon icon-angle-double-left"></i>
+                            <?php } ?>
+
+                            <?php $big = 999999999;
+                                echo paginate_links( array(
+                                    'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+                                    'format' => '?paged=%#%',
+                                    'current' => max( 1, get_query_var('paged') ),
+                                    'prev_text'          => '',
+                                    'next_text'          => '',
+                                    'total' => $news->max_num_pages
+                                ) );
+                            ?>
+
+                            <?php if( get_query_var('paged') == $news->max_num_pages) { ?>
+                                    <i class="icon icon-angle-double-right"></i>
+                            <?php } ?>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
             

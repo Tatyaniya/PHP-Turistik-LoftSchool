@@ -901,7 +901,7 @@ a img.aligncenter {
   line-height: 17px;
   margin: 0;
   padding: 0 4px 5px; }
-#calendar-3 {
+.sidebar .widget_calendar {
     list-style-type: none;
 }
 .content-404 {

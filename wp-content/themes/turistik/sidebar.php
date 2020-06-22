@@ -37,27 +37,27 @@
                 <?php if ( $cats = get_terms( array('taxonomy' => 'category', 'parent' => 0 )) ) : ?>
                     <?php foreach($cats as $cat) : ?>
 
-                            <li class="category-list__item">
+                        <li class="category-list__item">
 
-                                <a href="<?php echo get_term_link( $cat );?>" class="category-list__item__link">
-                                    <?php echo $cat->name; ?>
-                                </a>
+                            <a href="<?php echo get_term_link( $cat );?>" class="category-list__item__link">
+                                <?php echo $cat->name; ?>
+                            </a>
 
-                                <?php $cat_data = get_categories( array( 'parent' => $cat->id, 'hide_empty' => 1 ) );
-                                    if ( $cat_data ) :
-                                        foreach ( $cat_data as $one_cat_data) : ?>
+                            <?php $cat_data = get_categories( array( 'parent' => $cat->term_id, 'exclude' => [10,13], 'hide_empty' => 1 ) );
+                                if ( $cat_data ) :
+                                    foreach ( $cat_data as $one_cat_data) : ?>
 
-                                            <ul class="category-list__inner">
-                                                <li class="category-list__item">
-                                                    <a href="<?php echo get_term_link( $one_cat_data );?>" class="category-list__item__link">
-                                                        <?php echo $one_cat_data->name; ?>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                           
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                            </li>
+                                        <ul class="category-list__inner">
+                                            <li class="category-list__item">
+                                                <a href="<?php echo get_term_link( $one_cat_data );?>" class="category-list__item__link">
+                                                    <?php echo $one_cat_data->name; ?>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                        </li>
 
                     <?php endforeach; ?>
                 <?php endif; ?>
