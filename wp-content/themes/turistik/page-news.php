@@ -1,18 +1,12 @@
 <?php get_header();
-$paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
-?>
+$paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1; ?>
 
     <div class="main-content">
         <div class="content-wrapper content-wrapper-news">
             <div class="content">
                 <h1 class="title-page">Последние новости</h1>
 
-                <?php $news = new WP_Query( array(
-                        'post_type'    => 'news',
-                        'orderby'      => 'date',
-                        'order'        => 'DESC',
-                        'paged'        => $paged
-                    ));
+                <?php $news = new WP_Query("cat=16&paged=$paged");
 
                         while ( $news->have_posts() ) :  $news->the_post(); ?>
 
@@ -34,12 +28,12 @@ $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
                         
                         <?php endwhile; 
 
-                    wp_reset_postdata(); 
-
+                    wp_reset_postdata();
                 ?>
+
                 <div class="pagenavi-post-wrap">
-                <?php // var_dump($news); 
-                        if($news->max_num_pages > 1) { ?>
+
+                    <?php if($news->max_num_pages > 1) { ?>
                         
                         <div class="pagenavi-post-wrap">
                             <?php if( get_query_var('paged') == 0) { ?>
@@ -62,10 +56,10 @@ $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
                             <?php } ?>
                         </div>
                     <?php } ?>
+
                 </div>
             </div>
             
-
           <?php get_sidebar() ?>
 
       </div>

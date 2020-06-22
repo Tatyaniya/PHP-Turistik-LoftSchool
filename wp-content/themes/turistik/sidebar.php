@@ -34,7 +34,7 @@
         <div class="sidebar-item__content">
             <ul class="category-list">
 
-                <?php if ( $cats = get_terms( array('taxonomy' => 'category', 'parent' => 0 )) ) : ?>
+                <?php if ( $cats = get_terms( array('taxonomy' => 'category', 'parent' => 0, 'exclude' => [16,17] )) ) : ?>
                     <?php foreach($cats as $cat) : ?>
 
                         <li class="category-list__item">

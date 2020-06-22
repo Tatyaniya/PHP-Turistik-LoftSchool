@@ -7,12 +7,7 @@ $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
             <div class="content">
                 <h1 class="title-page">Aкции</h1>
 
-                <?php $stocks = new WP_Query( array(
-                        'post_type'     => 'stocks',
-                        'orderby'       => 'date',
-                        'order'         => 'DESC',
-                        'paged'         => $paged
-                    ));
+                <?php $stocks = new WP_Query("cat=17&paged=$paged");
 
                         while ( $stocks->have_posts() ) :  $stocks->the_post(); ?>
 
@@ -40,14 +35,33 @@ $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
 
                     wp_reset_postdata(); 
                 ?>
+
                 <div class="pagenavi-post-wrap">
-                    <?php
-                        $args = [
-                            'prev_text' => __('<i class="icon icon-angle-double-left"></i>', 'turistik'),
-                            'next_text' => __('<i class="icon icon-angle-double-right"></i>', 'turistik'),
-                            ];
-                        the_posts_pagination($args);
-                    ?>
+                    
+                    <?php if($stocks->max_num_pages > 1) { ?>
+                            
+                        <div class="pagenavi-post-wrap">
+                            <?php if( get_query_var('paged') == 0) { ?>
+                                    <i class="icon icon-angle-double-left"></i>
+                            <?php } ?>
+
+                            <?php $big = 999999999;
+                                echo paginate_links( array(
+                                    'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+                                    'format' => '?paged=%#%',
+                                    'current' => max( 1, get_query_var('paged') ),
+                                    'prev_text'          => '',
+                                    'next_text'          => '',
+                                    'total' => $stocks->max_num_pages
+                                ) );
+                            ?>
+
+                            <?php if( get_query_var('paged') == $stocks->max_num_pages) { ?>
+                                    <i class="icon icon-angle-double-right"></i>
+                            <?php } ?>
+                        </div>
+                    <?php } ?>
+
                 </div>
             </div>
 

@@ -44,7 +44,8 @@ function do_excerpt($string, $word_limit) {
     }
 }
 
-/*function turistik_register_custom_post_type() {
+/*
+function turistik_register_custom_post_type() {
 
     register_post_type( 'news', array(
         'labels'             => array(
@@ -95,9 +96,10 @@ function do_excerpt($string, $word_limit) {
         'menu_icon'			 => 'dashicons-smiley',
         'supports'           => array( 'title', 'editor','thumbnail' ),
     ) );
-}*/
+}
  
-//add_action( 'init', 'turistik_register_custom_post_type' );
+add_action( 'init', 'turistik_register_custom_post_type' );
+*/
 
 function my_sidebar(){
 	register_sidebar(
@@ -109,51 +111,3 @@ function my_sidebar(){
 }
  
 add_action('widgets_init', 'my_sidebar');
-
-
-function first_child_terms_list() {
-
-	$current_term = get_queried_object();
-
-	// Если текущая страница не страница термина - прерываем выполнение функции
-	if ( ! ( is_a( $current_term, 'WP_Term' ) ) ) {
-		return;
-	}
-
-	// Если это термин не древовидной таксономии - прерываем выполнение функции
-	if ( ! is_taxonomy_hierarchical( $current_term->taxonomy ) ) {
-		return;
-	}
-
-	// Запрашиваем дочерние элементы верхнего уровня текущего термина
-	$terms = get_terms( [
-		'taxonomy'   => $current_term->taxonomy,
-		'parent'     => $current_term->term_id,
-		'hide_empty' => false,
-	] );
-
-	// Если возникла ошибка запроса или терминов нет - прерываем выполнение функции
-	if ( is_wp_error( $terms ) || ! $terms ) {
-		return;
-	}
-
-	?>
-
-	<ul class="terms">
-	<?php foreach ( $terms as $term ): ?>
-
-		<li class="term">
-			<?php
-			printf(
-				'<a href="%s" class="term-link">%s</a>',
-				esc_url( get_term_link( $term ) ),
-				esc_html( $term->name )
-			)
-			?>
-		</li>
-
-	<?php endforeach; ?>
-	</ul>
-
-	<?php
-}
